@@ -45,11 +45,13 @@ export const houseCheckWorkflow: WorkflowDefinition = {
         title: "Which property are you checking?",
         fields: [
           {
-            kind: "text",
+            kind: "choice",
             name: "propertyId",
-            label: "Property ID",
+            label: "Property",
             required: true,
-            placeholder: "Copy the id from your assigned list",
+            optionsFromPath: "properties",
+            optionValueKey: "id",
+            optionLabelTemplate: "{{address}}, {{city}}, {{state}}",
           },
         ],
         submitLabel: "Start check",

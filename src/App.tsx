@@ -2,7 +2,6 @@ import { useState, lazy, Suspense } from "react";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/toaster";
-import { PropertyAssistant } from "@/components/ai/PropertyAssistant";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SidebarProvider } from "@/components/ui/sidebar";
@@ -75,6 +74,7 @@ const ClientMessages = lazy(() => import("./pages/ClientPortal/Messages"));
 const Auth = lazy(() => import("./pages/Auth"));
 const Setup = lazy(() => import("./pages/Setup"));
 const WorkflowsDemo = lazy(() => import("./pages/WorkflowsDemo"));
+const MobileHouseCheck = lazy(() => import("./pages/MobileHouseCheck"));
 const PropertyOwners = lazy(() => import("./pages/PropertyOwners"));
 const PropertyOwnerDetail = lazy(() => import("./pages/PropertyOwnerDetail"));
 const AdminNavigation = lazy(() => import("./pages/AdminNavigation"));
@@ -143,6 +143,15 @@ const AppContent = () => {
             <Route path="/workflows-demo" element={
               <Suspense fallback={<RouteLoadingFallback />}>
                 <WorkflowsDemo />
+              </Suspense>
+            } />
+
+            {/* Mobile-first preview of the house-check workflow. Outside the
+                auth gate; auto-signs in as the seeded house watcher. Stand-in
+                for the future Expo app. */}
+            <Route path="/mobile/house-check" element={
+              <Suspense fallback={<RouteLoadingFallback />}>
+                <MobileHouseCheck />
               </Suspense>
             } />
             
@@ -530,7 +539,6 @@ const AppContent = () => {
               </ProtectedRoute>
             } />
           </Routes>
-          <PropertyAssistant />
         </BrowserRouter>
       </TooltipProvider>
     

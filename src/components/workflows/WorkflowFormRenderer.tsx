@@ -75,6 +75,7 @@ export function WorkflowFormRenderer({
             field={field}
             value={values[field.name]}
             onChange={(v) => update(field.name, v)}
+            state={state ?? {}}
           />
         ))}
       </div>
@@ -94,10 +95,12 @@ function FieldRow({
   field,
   value,
   onChange,
+  state,
 }: {
   field: UserInputField;
   value: JsonValue | undefined;
   onChange: (v: JsonValue) => void;
+  state: Record<string, JsonValue>;
 }) {
   switch (field.kind) {
     case "text":
@@ -136,7 +139,8 @@ function FieldRow({
           <Label htmlFor={field.name}>{field.label}</Label>
         </div>
       );
-    case "choice":
+    case "choice": {
+      const options = resolveChoiceOptions(field, state);
       return (
         <div className="space-y-1.5">
           <Label>
@@ -151,7 +155,7 @@ function FieldRow({
               <SelectValue placeholder="Select…" />
             </SelectTrigger>
             <SelectContent>
-              {field.options.map((o) => (
+              {options.map((o) => (
                 <SelectItem key={o.value} value={o.value}>
                   {o.label}
                 </SelectItem>
@@ -160,6 +164,7 @@ function FieldRow({
           </Select>
         </div>
       );
+    }
     case "photo":
       // Photo capture is TODO for web demo — on mobile this will use the
       // device camera via Expo ImagePicker. For now we note that upload isn't
@@ -384,6 +389,40 @@ function getStatePath(
     if (cur === undefined) return undefined;
   }
   return cur;
+}
+
+function resolveChoiceOptions(
+  field: Extract<UserInputField, { kind: "choice" }>,
+  state: Record<string, JsonValue>,
+): Array<{ value: string; label: string }> {
+  if (field.optionsFromPath) {
+    const raw = getStatePath(state, field.optionsFromPath);
+    if (!Array.isArray(raw)) return [];
+    const valueKey = field.optionValueKey ?? "id";
+    const labelKey = field.optionLabelKey ?? "label";
+    const template = field.optionLabelTemplate;
+    return raw
+      .map((item) => {
+        if (!item || typeof item !== "object" || Array.isArray(item)) return null;
+        const obj = item as { [k: string]: JsonValue };
+        const v = obj[valueKey];
+        if (typeof v !== "string") return null;
+        let label: string;
+        if (template) {
+          label = template.replace(/\{\{\s*([^}]+?)\s*\}\}/g, (_, key: string) => {
+            const raw = obj[key.trim()];
+            if (raw === null || raw === undefined) return "";
+            return typeof raw === "string" ? raw : String(raw);
+          });
+        } else {
+          const l = obj[labelKey];
+          label = typeof l === "string" ? l : v;
+        }
+        return { value: v, label };
+      })
+      .filter((x): x is { value: string; label: string } => x !== null);
+  }
+  return field.options ?? [];
 }
 
 function requiredMissing(

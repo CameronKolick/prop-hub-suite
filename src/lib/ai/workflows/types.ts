@@ -133,7 +133,23 @@ export type UserInputField =
       kind: "choice";
       name: string;
       label: string;
-      options: { value: string; label: string }[];
+      /** Static options. Ignored if optionsFromPath is set. */
+      options?: { value: string; label: string }[];
+      /**
+       * Path to an array of objects in state. Each element is turned into an
+       * option using `optionValueKey` and `optionLabelKey`. Use this to pick
+       * from data loaded earlier in the workflow (e.g. the watcher's
+       * assigned properties).
+       */
+      optionsFromPath?: StatePath;
+      optionValueKey?: string; // default "id"
+      optionLabelKey?: string; // default "label"
+      /**
+       * Optional template for building the option label from the raw item.
+       * Uses {{key}} placeholders pulled from the array element. Overrides
+       * optionLabelKey when set.
+       */
+      optionLabelTemplate?: string;
       required?: boolean;
       defaultValue?: string;
       defaultValuePath?: StatePath;
