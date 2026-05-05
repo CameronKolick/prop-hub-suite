@@ -23,6 +23,7 @@ serve(async (req: Request) => {
 
   try {
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+    const appPublicUrl = Deno.env.get("APP_PUBLIC_URL") ?? "";
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const resendApiKey = Deno.env.get("RESEND_API_KEY");
     const twilioAccountSid = Deno.env.get("TWILIO_ACCOUNT_SID");
@@ -97,7 +98,7 @@ serve(async (req: Request) => {
                     <p style="color: #666; font-size: 12px;">
                       This is an automated message from your property management system.
                       <br>
-                      <a href="${supabaseUrl.replace('supabase.co', 'lovableproject.com')}">Login to your dashboard</a>
+                      <a href="${appPublicUrl}">Login to your dashboard</a>
                     </p>
                   </div>
                 `,

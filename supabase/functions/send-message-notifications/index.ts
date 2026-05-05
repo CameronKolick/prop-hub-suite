@@ -20,6 +20,7 @@ serve(async (req: Request) => {
 
   try {
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+    const appPublicUrl = Deno.env.get("APP_PUBLIC_URL") ?? "";
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const resendApiKey = Deno.env.get("RESEND_API_KEY");
     const twilioAccountSid = Deno.env.get("TWILIO_ACCOUNT_SID");
@@ -88,7 +89,7 @@ serve(async (req: Request) => {
                 <div style="background: #f5f5f5; padding: 15px; border-radius: 5px; margin: 10px 0;">
                   ${message_content}
                 </div>
-                <p><a href="${supabaseUrl.replace('supabase.co', 'lovableproject.com')}/messages">View in App</a></p>
+                <p><a href="${appPublicUrl}/messages">View in App</a></p>
               `,
             }),
           });

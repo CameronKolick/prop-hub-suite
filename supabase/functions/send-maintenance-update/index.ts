@@ -20,6 +20,7 @@ serve(async (req: Request) => {
 
   try {
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+    const appPublicUrl = Deno.env.get("APP_PUBLIC_URL") ?? "";
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const resendApiKey = Deno.env.get("RESEND_API_KEY");
     const twilioAccountSid = Deno.env.get("TWILIO_ACCOUNT_SID");
@@ -131,7 +132,7 @@ ${maintenanceRequest.estimated_cost ? `Estimated Cost: $${maintenanceRequest.est
                     <p style="color: #666; font-size: 12px;">
                       This is an automated update from your property management system.
                       <br>
-                      <a href="${supabaseUrl.replace('supabase.co', 'lovableproject.com')}/maintenance">View Maintenance Dashboard</a>
+                      <a href="${appPublicUrl}/maintenance">View Maintenance Dashboard</a>
                     </p>
                   </div>
                 `,

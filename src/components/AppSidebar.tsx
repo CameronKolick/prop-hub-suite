@@ -394,7 +394,7 @@ export function AppSidebar() {
               {!collapsed && (
                 <div className="flex items-center justify-center w-full">
                   <img 
-                    src="/lovable-uploads/42342793-c892-4f13-94af-fd1566d9a29a.png" 
+                    src="/brand/42342793-c892-4f13-94af-fd1566d9a29a.png"
                     alt="Latitude Premier Properties logo" 
                     className={`${isMobile ? "w-32 h-32" : "w-40 h-40"} object-contain`}
                     loading="lazy"

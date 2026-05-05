@@ -199,7 +199,7 @@ const Auth = () => {
         <div className="pt-8 pb-6 px-6 sm:px-8">
           <div className="flex justify-center">
             <img 
-              src="/lovable-uploads/d57228a9-3aea-44c1-9331-d5c7640e4b3e.png" 
+              src="/brand/d57228a9-3aea-44c1-9331-d5c7640e4b3e.png"
               alt="Latitude Premier Properties" 
               className="h-24 sm:h-28 w-auto object-contain"
             />

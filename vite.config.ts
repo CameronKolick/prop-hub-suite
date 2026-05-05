@@ -1,7 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
-import { componentTagger } from "lovable-tagger";
 import { visualizer } from "rollup-plugin-visualizer";
 
 // https://vitejs.dev/config/
@@ -12,7 +11,6 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     react(),
-    mode === 'development' && componentTagger(),
     mode === 'analyze' && visualizer({
       filename: 'dist/stats.html',
       open: false,
@@ -73,6 +71,5 @@ export default defineConfig(({ mode }) => ({
       '@tanstack/react-query',
       '@supabase/supabase-js',
     ],
-    exclude: ['lovable-tagger'],
   },
 }));

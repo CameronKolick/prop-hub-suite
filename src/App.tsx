@@ -58,7 +58,7 @@ const HouseWatcherMobileDashboard = lazy(() => import("./pages/dashboards/HouseW
 const PropertyManagerMobileDashboard = lazy(() => import("./pages/dashboards/PropertyManagerMobileDashboard"));
 const HouseWatcherMobileChecks = lazy(() => import("./pages/HouseWatcherMobileChecks"));
 const PropertyManagerMobileMaintenance = lazy(() => import("./pages/PropertyManagerMobileMaintenance"));
-const MobileBottomNavigation = lazy(() => import("./components/mobile/MobileBottomNavigation"));
+
 const Documents = lazy(() => import("./pages/Documents"));
 const UserManagement = lazy(() => import("./pages/UserManagement"));
 const DevTools = lazy(() => import("./pages/DevTools"));
@@ -74,6 +74,7 @@ const ClientRequests = lazy(() => import("./pages/ClientPortal/Requests"));
 const ClientMessages = lazy(() => import("./pages/ClientPortal/Messages"));
 const Auth = lazy(() => import("./pages/Auth"));
 const Setup = lazy(() => import("./pages/Setup"));
+const WorkflowsDemo = lazy(() => import("./pages/WorkflowsDemo"));
 const PropertyOwners = lazy(() => import("./pages/PropertyOwners"));
 const PropertyOwnerDetail = lazy(() => import("./pages/PropertyOwnerDetail"));
 const AdminNavigation = lazy(() => import("./pages/AdminNavigation"));
@@ -136,6 +137,14 @@ const AppContent = () => {
                 <Setup />
               </Suspense>
             } />
+
+            {/* Workflows Demo - dev-only route outside the auth gate, uses the
+                mock data + auth clients so it works without a real login. */}
+            <Route path="/workflows-demo" element={
+              <Suspense fallback={<RouteLoadingFallback />}>
+                <WorkflowsDemo />
+              </Suspense>
+            } />
             
             
             {/* Protected Routes */}
@@ -151,7 +160,7 @@ const AppContent = () => {
                 >
                   <div className="min-h-screen flex w-full">
                     <AppSidebar />
-                    <main className="flex-1 flex flex-col min-w-0 pb-20 lg:pb-0">
+                    <main className="flex-1 flex flex-col min-w-0 pb-28 lg:pb-0 overflow-x-hidden">
                       <AppHeader />
                       <ErrorBoundary>
                          <Suspense fallback={<RouteLoadingFallback />}>

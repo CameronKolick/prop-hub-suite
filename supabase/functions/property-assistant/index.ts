@@ -13,10 +13,11 @@ serve(async (req) => {
 
   try {
     const { messages, userId } = await req.json();
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+    const AI_GATEWAY_API_KEY = Deno.env.get("AI_GATEWAY_API_KEY");
+    const AI_GATEWAY_URL = Deno.env.get("AI_GATEWAY_URL");
 
-    if (!LOVABLE_API_KEY) {
-      throw new Error("LOVABLE_API_KEY is not configured");
+    if (!AI_GATEWAY_API_KEY || !AI_GATEWAY_URL) {
+      throw new Error("AI gateway not configured (set AI_GATEWAY_API_KEY and AI_GATEWAY_URL)");
     }
 
     // Get user context from database
@@ -80,10 +81,10 @@ Guidelines:
 - Always be accurate about the user's actual data when available
 - Suggest using specific features of the app when relevant`;
 
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    const response = await fetch(AI_GATEWAY_URL, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
+        Authorization: `Bearer ${AI_GATEWAY_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({

@@ -120,11 +120,11 @@ const ClientDashboard = () => {
     <div className="min-h-screen bg-gradient-subtle">
       {/* Header */}
       <header className="bg-card border-b border-border p-6 shadow-sm">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-[min(1200px,100%)] mx-auto">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <img 
-                src="/lovable-uploads/42342793-c892-4f13-94af-fd1566d9a29a.png" 
+                src="/brand/42342793-c892-4f13-94af-fd1566d9a29a.png"
                 alt="Latitude Premier Properties logo" 
                 className="w-12 h-12 object-contain"
                 loading="lazy"
@@ -156,7 +156,7 @@ const ClientDashboard = () => {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto p-6">
+      <main className="max-w-[min(1200px,100%)] mx-auto p-6">
         {/* Quick Actions */}
         <Card className="mb-6 shadow-md border-0">
           <CardHeader>
