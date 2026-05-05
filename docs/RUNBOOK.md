@@ -117,6 +117,27 @@ Secrets live in **Google Secret Manager**. Never in `.env` files committed to gi
 
 See `docs/INFRA_SPEC.md` section 0 for the pre-existing CI failure context.
 
+### Test configuration is tangled — decide a direction
+
+There are three distinct sets of tests in the repo, and the CI config and `playwright.config.ts` do not agree:
+
+- `tests/audit.spec.ts` and `tests/smoke.spec.ts` — live at `tests/*.spec.ts`. Read `process.env.BASE_URL` directly. Walk every known route and assert no 404. Cleaned up recently (no longer reference deleted routes); not run by CI today because `playwright.config.ts` sets `testDir: './tests/e2e'`.
+- `tests/e2e/critical-flows.spec.ts` — the only file `playwright.config.ts` picks up. Uses `page.goto('/')` with `baseURL` from `playwright.config.ts`, which reads `PLAYWRIGHT_TEST_BASE_URL`. Hardcodes test credentials and requires a real Supabase login — will never pass without seed data or a mocked auth strategy.
+- Vitest unit tests — discovered by `vitest.config.ts`'s `include` pattern (`src/**/*.{test,spec}.{ts,tsx}`). Run as a separate CI step.
+
+`.github/workflows/ci.yml` currently:
+- Starts `vite preview` on `:4173`
+- Sets `BASE_URL=http://localhost:4173` (read by `tests/*.spec.ts` but not by `playwright.config.ts`)
+- Runs `npx playwright test -c .` (executes `tests/e2e/critical-flows.spec.ts` only)
+- `playwright.config.ts` *also* declares its own `webServer` that runs `npm run dev` — which conflicts with the CI-started preview server
+
+**Recommended resolution:** pick one strategy.
+
+- If `tests/*.spec.ts` (route audit + smoke) are the ones worth running, change `playwright.config.ts`'s `testDir` to `'./tests'` (or add a glob), standardize on `PLAYWRIGHT_TEST_BASE_URL`, and delete the `webServer` block in the config so CI's preview server is used.
+- If `tests/e2e/critical-flows.spec.ts` is the target, it needs a mocked auth strategy or a seeded user — the hardcoded `test@example.com` login will keep failing.
+
+Either way, stop having two competing playwright configs in motion.
+
 ## 10. Access
 
 - GCP project: _TBD_

@@ -5,7 +5,8 @@ const BASE_ORIGIN = new URL(BASE_URL).origin;
 
 let pageErrors: string[] = [];
 let failedResponses: string[] = [];
-// Routes sourced from App.tsx (static paths only)
+// Routes sourced from App.tsx (static paths only). Keep this list current
+// when adding or removing routes so the audit stays meaningful.
 const routes = [
   '/',
   '/properties',
@@ -15,7 +16,6 @@ const routes = [
   '/property-owners',
   '/house-watching',
   '/property-check',
-  '/leases',
   '/finances',
   '/documents',
   '/settings',
@@ -24,18 +24,16 @@ const routes = [
   '/admin-navigation',
   '/property-manager-dashboard',
   '/profile',
-  // Client portal
-  '/client-portal',
-  '/client-portal/properties',
-  '/client-portal/requests',
-  '/client-portal/messages',
-  '/client-portal/reports',
+  // Workflow engine dev routes (outside auth gate)
+  '/workflows-demo',
+  '/mobile/house-check',
   // Public routes
   '/auth',
   '/setup',
 ] as const;
 
-// Enable emergency admin bypass and error listeners before each test
+// Enable emergency admin bypass (read by src/components/ProtectedRoute.tsx in
+// DEV) and attach error listeners before each test.
 test.beforeEach(async ({ page }) => {
   pageErrors = [];
   failedResponses = [];
@@ -59,7 +57,14 @@ test.beforeEach(async ({ page }) => {
     }
   });
 
-  await page.goto(new URL('/admin-emergency', BASE_URL).toString(), { waitUntil: 'load' });
+  await page.addInitScript(() => {
+    try {
+      window.sessionStorage.setItem('emergencyAdmin', 'true');
+    } catch {
+      // sessionStorage may be unavailable in some contexts; ProtectedRoute
+      // also checks a window global, but we don't set that here.
+    }
+  });
 });
 
 // Helper to assert that a page did not render the SPA 404

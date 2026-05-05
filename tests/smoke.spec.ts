@@ -2,7 +2,8 @@ import { test, expect } from '@playwright/test';
 
 const BASE_URL = process.env.BASE_URL || 'http://localhost:4173';
 
-// Core routes to validate no SPA 404 is rendered (auth routes may redirect)
+// Core routes to validate no SPA 404 is rendered (auth routes may redirect).
+// Keep this list current when routes are added or removed.
 const routes = [
   '/',
   '/properties',
@@ -12,7 +13,6 @@ const routes = [
   '/property-owners',
   '/house-watching',
   '/property-check',
-  '/leases',
   '/finances',
   '/documents',
   '/settings',
@@ -20,16 +20,20 @@ const routes = [
   '/user-management',
   '/admin-navigation',
   '/property-manager-dashboard',
-  '/client-portal',
-  '/client-portal/properties',
-  '/client-portal/requests',
-  '/client-portal/messages',
-  '/client-portal/reports',
+  '/workflows-demo',
+  '/mobile/house-check',
 ];
 
 test.beforeEach(async ({ page }) => {
-  // Activate emergency admin to bypass auth in dev
-  await page.goto(new URL('/admin-emergency', BASE_URL).toString(), { waitUntil: 'load' });
+  // Enable the DEV-only emergency admin bypass from ProtectedRoute.tsx so
+  // authenticated routes render without a real login.
+  await page.addInitScript(() => {
+    try {
+      window.sessionStorage.setItem('emergencyAdmin', 'true');
+    } catch {
+      // ignore
+    }
+  });
 });
 
 test.describe('Smoke routes', () => {
