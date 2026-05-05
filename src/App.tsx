@@ -38,11 +38,8 @@ const Properties = lazy(() => import("./pages/Properties"));
 const PropertyDetail = lazy(() => import("./pages/PropertyDetail"));
 const Tenants = lazy(() => import("./pages/Tenants"));
 const Finances = lazy(() => import("./pages/Finances"));
-const LeasingPage = lazy(() => import("./pages/Leasing"));
 const Maintenance = lazy(() => import("./pages/Maintenance"));
 const Messages = lazy(() => import("./pages/Messages"));
-const Services = lazy(() => import("./pages/Services"));
-const ServiceManagement = lazy(() => import("./pages/ServiceManagement"));
 const HouseWatching = lazy(() => import("./pages/HouseWatching"));
 const HouseWatcherDetail = lazy(() => import("./pages/HouseWatcherDetail"));
 const HouseWatcherHome = lazy(() => import("./pages/HouseWatcherHome"));
@@ -340,13 +337,6 @@ const AppContent = () => {
                             </RoleBasedAccess>
                           </PageTransition>
                         } />
-                        <Route path="/leasing" element={
-                          <PageTransition>
-                            <RoleBasedAccess allowedRoles={ROLE_COMBINATIONS.LEASING}>
-                              <LeasingPage />
-                            </RoleBasedAccess>
-                          </PageTransition>
-                        } />
                          <Route path="/messages" element={
                            <PageTransition>
                              <RoleBasedAccess allowedRoles={ROLE_COMBINATIONS.ALL_ROLES}>
@@ -354,20 +344,6 @@ const AppContent = () => {
                              </RoleBasedAccess>
                            </PageTransition>
                          } />
-                          <Route path="/services" element={
-                            <PageTransition>
-                              <RoleBasedAccess allowedRoles={ROLE_COMBINATIONS.ALL_ROLES}>
-                                <Services />
-                              </RoleBasedAccess>
-                            </PageTransition>
-                          } />
-                          <Route path="/service-management" element={
-                            <PageTransition>
-                              <RoleBasedAccess allowedRoles={ROLE_COMBINATIONS.ADMIN_ONLY}>
-                                <ServiceManagement />
-                              </RoleBasedAccess>
-                            </PageTransition>
-                          } />
                         <Route path="/property-check/:id" element={
                           <PageTransition>
                             <RoleBasedAccess allowedRoles={['admin', 'property_manager']}>

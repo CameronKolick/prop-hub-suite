@@ -135,13 +135,6 @@ const adminMenuItems = [
     icon: UserCog,
     description: "User management",
     group: "Settings"
-  },
-  {
-    title: "Services",
-    url: "/services",
-    icon: Settings,
-    description: "Service packages",
-    group: "Settings"
   }
 ] as const;
 

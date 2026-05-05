@@ -26,8 +26,10 @@ export const RoleBasedRedirect = () => {
       tenant: '/tenant-dashboard',
       house_watcher: '/house-watcher-dashboard',
       contractor: '/vendor-portal',
-      leasing_agent: '/leasing',
-      client: '/client-portal',
+      // Leasing + client portal pages were removed as part of the legacy
+      // cleanup; fall through to '/' until those experiences are rebuilt.
+      leasing_agent: '/',
+      client: '/',
     };
 
     const targetRoute = roleRoutes[activeRole];
