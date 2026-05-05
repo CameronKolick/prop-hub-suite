@@ -10,13 +10,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CalendarIcon, User, Clock, History, Save, UserPlus, DollarSign, Sparkles } from "lucide-react";
+import { CalendarIcon, User, Clock, History, Save, UserPlus, DollarSign } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { MaintenanceRequest, useUpdateMaintenanceRequest, useMaintenanceStatusHistory, useAssignMaintenanceRequest } from "@/hooks/queries/useMaintenanceRequests";
 import { useProfiles } from "@/hooks/queries/useProfiles";
 import MaintenanceTimeline from "@/components/MaintenanceTimeline";
-import { MaintenanceTriage } from "@/components/ai/MaintenanceTriage";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 interface MaintenanceDetailsDialogProps {
@@ -145,12 +144,8 @@ const MaintenanceDetailsDialog = ({ request, open, onOpenChange }: MaintenanceDe
         </DialogHeader>
 
         <Tabs defaultValue="details" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="details">Details</TabsTrigger>
-            <TabsTrigger value="ai-triage" className="flex items-center gap-1">
-              <Sparkles className="w-3 h-3" />
-              AI Triage
-            </TabsTrigger>
             <TabsTrigger value="schedule">Schedule</TabsTrigger>
             <TabsTrigger value="history">History</TabsTrigger>
           </TabsList>
@@ -240,28 +235,6 @@ const MaintenanceDetailsDialog = ({ request, open, onOpenChange }: MaintenanceDe
                 </div>
               </CardContent>
             </Card>
-          </TabsContent>
-
-          <TabsContent value="ai-triage" className="space-y-4">
-            <MaintenanceTriage
-              requestId={request.id}
-              title={request.title}
-              description={request.description || ""}
-              propertyId={request.property_id}
-              tenantReported={true}
-              onTriageComplete={(result) => {
-                // Optionally update priority based on AI recommendation
-                if (result.priority !== request.priority) {
-                  setStatus(result.priority === 'emergency' ? 'pending' : status);
-                }
-              }}
-              onVendorSelect={(vendorId, vendorName) => {
-                toast({
-                  title: "Vendor Selected",
-                  description: `${vendorName} has been selected. Update contractor info in Details tab.`,
-                });
-              }}
-            />
           </TabsContent>
 
           <TabsContent value="schedule" className="space-y-4">
