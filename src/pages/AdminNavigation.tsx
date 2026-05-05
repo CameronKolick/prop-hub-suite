@@ -22,28 +22,10 @@ import { RoleDebugger } from "@/components/dev/RoleDebugger";
 const AdminNavigation = () => {
   const navigationSections = [
     {
-      title: "Client Portal",
-      description: "Client-facing portal pages",
-      pages: [
-        { title: "Dashboard", url: "/client-portal", icon: Home, description: "Main client dashboard" },
-        { title: "Properties", url: "/client-portal/properties", icon: Building, description: "Client property views" },
-        { title: "Reports", url: "/client-portal/reports", icon: BarChart3, description: "Client reports and analytics" },
-        { title: "Requests", url: "/client-portal/requests", icon: FileText, description: "Client maintenance requests" },
-        { title: "Messages", url: "/client-portal/messages", icon: MessageSquare, description: "Client messaging interface" },
-      ]
-    },
-    {
       title: "Development Tools",
       description: "Development and debugging tools",
       pages: [
         { title: "Dev Tools", url: "/dev-tools", icon: Wrench, description: "Development utilities and debugging" },
-      ]
-    },
-    {
-      title: "System Configuration",
-      description: "Configure system-wide settings and templates",
-      pages: [
-        { title: "Check Templates", url: "/admin/check-templates", icon: CheckSquare, description: "Manage property and home check templates" },
       ]
     },
     {
@@ -69,7 +51,7 @@ const AdminNavigation = () => {
   ];
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
+    <div className="max-w-[min(1200px,100%)] mx-auto px-4 py-6 space-y-6">
       <div className="space-y-2">
         <h1 className="text-3xl font-bold">Admin Navigation</h1>
         <p className="text-muted-foreground">

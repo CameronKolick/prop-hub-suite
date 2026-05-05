@@ -10,7 +10,6 @@ import {
   Wrench, 
   MessageCircle,
   FolderOpen,
-  BarChart3,
   Settings,
   Plus,
   Search,
@@ -128,13 +127,6 @@ const adminMenuItems = [
     description: "File management",
     group: "Operations"
   },
-  {
-    title: "Reports",
-    url: "/client-portal/reports",
-    icon: BarChart3,
-    description: "Analytics",
-    group: "Operations"
-  },
 
   // Settings
   {
@@ -145,24 +137,10 @@ const adminMenuItems = [
     group: "Settings"
   },
   {
-    title: "Templates",
-    url: "/admin/check-templates",
-    icon: FileText,
-    description: "Check templates",
-    group: "Settings"
-  },
-  {
     title: "Services",
     url: "/services",
     icon: Settings,
     description: "Service packages",
-    group: "Settings"
-  },
-  {
-    title: "Audit Logs",
-    url: "/admin/audit-logs",
-    icon: Shield,
-    description: "Security audit",
     group: "Settings"
   }
 ] as const;

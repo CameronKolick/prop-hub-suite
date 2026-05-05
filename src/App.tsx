@@ -66,11 +66,6 @@ const PaymentSuccess = lazy(() => import("./pages/PaymentSuccess"));
 const PaymentCancelled = lazy(() => import("./pages/PaymentCancelled"));
 const VendorPortalPage = lazy(() => import("./pages/VendorPortal"));
 const Settings = lazy(() => import("./pages/Settings"));
-const ClientDashboard = lazy(() => import("./pages/ClientPortal/Dashboard"));
-const ClientProperties = lazy(() => import("./pages/ClientPortal/Properties"));
-const ClientReports = lazy(() => import("./pages/ClientPortal/Reports"));
-const ClientRequests = lazy(() => import("./pages/ClientPortal/Requests"));
-const ClientMessages = lazy(() => import("./pages/ClientPortal/Messages"));
 const Auth = lazy(() => import("./pages/Auth"));
 const Setup = lazy(() => import("./pages/Setup"));
 const WorkflowsDemo = lazy(() => import("./pages/WorkflowsDemo"));
@@ -81,11 +76,9 @@ const AdminNavigation = lazy(() => import("./pages/AdminNavigation"));
 const Activity = lazy(() => import("./pages/Activity"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const PropertyManagerView = lazy(() => import("./pages/PropertyManagerView"));
-const CheckTemplates = lazy(() => import("./pages/admin/CheckTemplates"));
 const AdminOverviewPage = lazy(() => import("./pages/admin/AdminOverview"));
 const MaintenanceHub = lazy(() => import("./pages/admin/MaintenanceHub"));
 const TenantsHub = lazy(() => import("./pages/admin/TenantsHub"));
-const AuditLogsPage = lazy(() => import("./pages/admin/AuditLogs"));
 const ProfileSetup = lazy(() => import("./components/ProfileSetup").then(m => ({ default: m.ProfileSetup })));
 
 
@@ -229,13 +222,6 @@ const AppContent = () => {
                           <PageTransition>
                             <RoleBasedAccess allowedRoles={ROLE_COMBINATIONS.ADMIN_ONLY}>
                               <TenantsHub />
-                            </RoleBasedAccess>
-                          </PageTransition>
-                        } />
-                        <Route path="/admin/audit-logs" element={
-                          <PageTransition>
-                            <RoleBasedAccess allowedRoles={ROLE_COMBINATIONS.ADMIN_ONLY}>
-                              <AuditLogsPage />
                             </RoleBasedAccess>
                           </PageTransition>
                         } />
@@ -510,19 +496,6 @@ const AppContent = () => {
                              </RoleBasedAccess>
                             </PageTransition>
                           } />
-                          <Route path="/admin/check-templates" element={
-                            <PageTransition>
-                              <RoleBasedAccess allowedRoles={ROLE_COMBINATIONS.ADMIN_ONLY}>
-                                <CheckTemplates />
-                              </RoleBasedAccess>
-                            </PageTransition>
-                          } />
-                        <Route path="/client-portal" element={<PageTransition><ClientDashboard /></PageTransition>} />
-                        <Route path="/client-portal/properties" element={<PageTransition><ClientProperties /></PageTransition>} />
-                        <Route path="/client-portal/reports" element={<PageTransition><ClientReports /></PageTransition>} />
-                        <Route path="/client-portal/reports/:reportId" element={<PageTransition><ClientReports /></PageTransition>} />
-                        <Route path="/client-portal/requests" element={<PageTransition><ClientRequests /></PageTransition>} />
-                        <Route path="/client-portal/messages" element={<PageTransition><ClientMessages /></PageTransition>} />
                         {import.meta.env.DEV && (
                           <Route path="/dev-tools" element={<PageTransition><DevTools /></PageTransition>} />
                         )}
