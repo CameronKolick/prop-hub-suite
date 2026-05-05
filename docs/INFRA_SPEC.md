@@ -6,6 +6,20 @@
 
 ---
 
+## 0. Known issues — read first
+
+**CI has been failing since before the migration work started.** Every recent commit on `main` shows a red X on `.github/workflows/ci.yml`. The immediate failure is at the `Install dependencies` (`npm ci`) step — `package-lock.json` is out of sync with `package.json` (notably after `lovable-tagger` was removed, the lockfile wasn't regenerated). There may be additional pre-existing failures behind that one.
+
+**Part of your onboarding is getting CI green again.** Expected steps:
+
+1. `npm install` locally to regenerate `package-lock.json`; commit the updated lock.
+2. Re-run CI and iterate on whatever surfaces next — likely some combination of typecheck errors, lint errors, or Playwright smoke tests that haven't been maintained.
+3. If any CI steps are unmaintained and not worth fixing right now, remove them from `.github/workflows/ci.yml` rather than letting them stay broken. Better to have a smaller CI that's honestly green.
+
+**Do not** merge new work on top of a broken CI long-term — we want a clean green baseline before layering real infra changes.
+
+---
+
 ## 1. Context in one paragraph
 
 prop-hub-suite is a property-management + house-watching app. It was built on Supabase and is being migrated to Google Cloud. New work is organized around an **AI workflow engine** that runs role-specific guided flows (e.g., a house watcher completing a check). The engine, the UI, and the mobile app all talk to the backend through two TypeScript interfaces — `DataClient` and `AuthClient`. Your job is to implement those interfaces on top of Google services. The app already runs today against a mock in-memory implementation of both.
@@ -288,6 +302,7 @@ Explicitly NOT required in the first iteration:
 
 When you're done, the following should be true:
 
+- [ ] **CI (`.github/workflows/ci.yml`) is green on `main`.** See section 0 for context.
 - [ ] `src/lib/data/google/googleClient.ts` exists and implements `DataClient`.
 - [ ] `src/lib/auth/firebase/firebaseAuthClient.ts` exists and implements `AuthClient`.
 - [ ] `src/lib/data/index.ts` has a `case "google"` branch; `src/lib/auth/index.ts` has a `case "firebase"` branch.
