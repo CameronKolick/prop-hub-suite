@@ -78,7 +78,6 @@ const UserManagement = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [loadingTimeout, setLoadingTimeout] = useState(false);
-  const [isEmergencyMode, setIsEmergencyMode] = useState(false);
   const [selectedUser, setSelectedUser] = useState<UserProfile | null>(null);
   const [userDetailsOpen, setUserDetailsOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -93,24 +92,6 @@ const UserManagement = () => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    console.log('🚀 UserManagement: Component mounted');
-    console.log('👤 UserManagement: Current user:', user ? 'exists' : 'null');
-    console.log('🌐 UserManagement: Current URL:', window.location.href);
-    
-    // Check if we're in emergency admin mode - check sessionStorage FIRST
-    const isEmergencyAdmin = sessionStorage.getItem('emergencyAdmin') === 'true';
-    const isEmergency = isEmergencyAdmin || 
-                       window.location.pathname.includes('/admin-emergency') || 
-                       window.location.href.includes('/admin-emergency') ||
-                       document.body.className.includes('emergency') ||
-                       (window as any).__EMERGENCY_ADMIN_MODE__ === true;
-    
-    if (isEmergency) {
-      console.log('🚨 UserManagement: Emergency mode detected - bypassing auth checks');
-      setIsEmergencyMode(true);
-      setIsAdmin(true);
-    }
-
     // Set up 10-second timeout for loading (increased from 5 seconds)
     timeoutRef.current = setTimeout(() => {
       console.log('⏰ UserManagement: Loading timeout reached (10 seconds)');
@@ -170,12 +151,6 @@ const UserManagement = () => {
 
   const checkAdminStatus = async () => {
     console.log('🔍 UserManagement: Checking admin status...');
-    
-    if (isEmergencyMode) {
-      console.log('🚨 UserManagement: Emergency mode - setting admin to true');
-      setIsAdmin(true);
-      return;
-    }
 
     if (!user) {
       console.log('❌ UserManagement: No user found for admin check');
@@ -598,7 +573,7 @@ const UserManagement = () => {
     });
   };
 
-  if (!isAdmin && !isEmergencyMode) {
+  if (!isAdmin) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-subtle">
         <Card className="max-w-md">
@@ -663,17 +638,12 @@ const UserManagement = () => {
 
   return (
     <div className="flex-1 p-6">
-      <div className="max-w-7xl mx-auto space-y-6">
+      <div className="max-w-[min(1200px,100%)] mx-auto space-y-6">
         {/* Clean Header */}
         <div className="flex items-center justify-between">
           <div className="space-y-1">
             <h1 className="text-3xl font-bold text-foreground flex items-center gap-2">
               User Management
-              {isEmergencyMode && (
-                <Badge variant="destructive" className="text-xs">
-                  🚨 EMERGENCY
-                </Badge>
-              )}
             </h1>
             <p className="text-muted-foreground">
               Manage user accounts and permissions • {users.length} users
@@ -739,16 +709,6 @@ const UserManagement = () => {
           )}
         </div>
 
-        {/* Emergency Status Alerts */}
-        {isEmergencyMode && (
-          <Alert className="border-destructive bg-destructive/5">
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription>
-              🚨 <strong>EMERGENCY MODE ACTIVE</strong> - Admin access has been bypassed for emergency operations.
-            </AlertDescription>
-          </Alert>
-        )}
-        
         {error && (
           <Alert variant="destructive">
             <AlertCircle className="h-4 w-4" />
